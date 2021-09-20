@@ -1,0 +1,21 @@
+[package]
+name = "draw_guess"
+version = "0.1.0"
+authors = ["oloshe <jacob.j@qq.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+members = [
+    "app",
+    "utils",
+    "ds"
+]
+
+[dependencies]
+app = { path = "./app" }
+utils = { path = "./utils" }
+# data struct
+ds = { path = "./ds" }
+actix-web = "4.0.0-beta.8"
