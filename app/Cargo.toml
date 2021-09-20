@@ -1,0 +1,15 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+utils = { path = "../utils" }
+ds = { path = "../ds" }
+actix = "0.12.0"
+actix-web = "4.0.0-beta.8"
+actix-web-actors = "4.0.0-beta.6"
+
+lazy_static="1.4.0"
