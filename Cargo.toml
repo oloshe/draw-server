@@ -10,7 +10,8 @@ edition = "2018"
 members = [
     "app",
     "utils",
-    "app/src/ds"
+    "app/src/ds",
+    "cache"
 ]
 
 [dependencies]
