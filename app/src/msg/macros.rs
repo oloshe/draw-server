@@ -1,5 +1,4 @@
 
-#[macro_export]
 macro_rules! msg_impl {
 	($msg_struct:ident: $type:ty) => {
 		impl Message for $msg_struct {
@@ -8,7 +7,6 @@ macro_rules! msg_impl {
 	};
 }
 
-#[macro_export]
 macro_rules! msg {
 	($(
 		$(#[$outer:meta])* 
@@ -19,7 +17,7 @@ macro_rules! msg {
 			#[derive(Debug)]
 			$(#[$outer])*
 			pub struct $msg_name($(pub $fields, )*);
-        	crate::msg_impl!($msg_name: $type);	
+        	msg_impl!($msg_name: $type);	
 		)*
 	};
 	($(
@@ -39,7 +37,7 @@ macro_rules! msg {
 					pub $field_name: $fields,
 				)*
         	}
-        crate::msg_impl!($msg_name: $type);)*
+        msg_impl!($msg_name: $type);)*
 	};
     () => {}
 }

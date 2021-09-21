@@ -1,8 +1,8 @@
 use actix::{Actor, Addr};
 
-use self::actor::LobbyActor;
+use actor::LobbyActor;
 
-pub mod actor;
+pub(crate) mod actor;
 
 lazy_static::lazy_static! {
     pub static ref LOBBY_ADDR: Addr<LobbyActor> = LobbyActor::start_default();

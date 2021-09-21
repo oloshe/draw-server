@@ -1,6 +1,6 @@
 use actix::Handler;
 
-use crate::ws::WsConn;
+use crate::WsConn;
 
 use crate::router::model::*;
 

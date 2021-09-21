@@ -4,6 +4,8 @@ use std::io::Write;
 pub use log;
 pub use log::info;
 pub use log::error;
+pub use urlencoding;
+pub use querystring;
 
 /// 初始化打印日志
 pub fn init_logger () {

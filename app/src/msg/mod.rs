@@ -1,5 +1,6 @@
-pub mod message;
+#[macro_use]
 pub mod macros;
+pub mod message;
 
 pub type NormalResult = Option<&'static str>;
 

@@ -1,4 +1,31 @@
+
+/// 玩家通过ws发送过来的请求，分割为两部分
+/// 第一部分确认函数，第二部分为携带的数据
+pub struct WsRequest {
+	pub model: String,
+	pub data: String,
+}
+impl WsRequest {
+    fn new(model: &str, data: &str) -> Self {
+        WsRequest { model: model.to_string(), data: data.to_string() }
+    }
+    /// 转换 socket 接收到的文本数据，格式为
+    pub(crate) fn from_str(text: &str) -> Self {
+        info!("parse: {}", text);
+        let text = text.trim();
+        let pos = text.find(".");
+        if let Some(pos) = pos {
+            let (model, data) = text.split_at(pos);
+            Self::new(model, data)
+        } else {
+            Self::new(text, "")
+        }
+    }
+}
+
 use std::borrow::Cow;
+
+use utils::info;
 
 
 /// 连接时的 query 参数
@@ -13,7 +40,7 @@ pub struct ConnectQuery {
 }
 impl ConnectQuery {
     pub fn new(query_string: &str) -> Self {
-        let queries = querystring::querify(query_string);
+        let queries = utils::querystring::querify(query_string);
         let mut result = ConnectQuery { 
             nick: None,
             code: None,
@@ -25,7 +52,7 @@ impl ConnectQuery {
                 return;
             }
             let some_value = Some(
-                urlencoding::decode(&value)
+                utils::urlencoding::decode(&value)
                     .unwrap_or(Cow::Borrowed(value))
                     .to_string()
             );

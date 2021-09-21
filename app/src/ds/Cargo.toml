@@ -8,6 +8,3 @@ edition = "2018"
 [dependencies]
 # 序列化
 serde = { version = "1.0.126", features = ["derive"] }
-
-urlencoding = "2.1.0"
-querystring = "1.1.0"

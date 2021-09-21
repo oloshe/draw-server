@@ -1,15 +1,13 @@
 use actix::{Message, Recipient};
-use ds::base::{RoomId, Uid};
-
+use crate::base::*;
 use super::NormalResult;
 
-
-crate::msg! {
+msg! {
     /// 通用发送消息 msg
     WsMessage(String) -> (),
 }
 
-crate::msg! {
+msg! {
     /// 大厅接收连接消息
     LobbyConnect {
         /// 玩家的ws接收器

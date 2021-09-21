@@ -503,7 +503,6 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "app",
- "ds",
  "utils",
 ]
 
@@ -511,9 +510,7 @@ dependencies = [
 name = "ds"
 version = "0.1.0"
 dependencies = [
- "querystring",
  "serde",
- "urlencoding",
 ]
 
 [[package]]
@@ -1475,6 +1472,8 @@ dependencies = [
  "chrono",
  "env_logger",
  "log",
+ "querystring",
+ "urlencoding",
 ]
 
 [[package]]

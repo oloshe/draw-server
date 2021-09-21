@@ -1,8 +1,8 @@
 use std::{fmt::Display, hash::Hash};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
 pub struct Uid(pub i64);
 
 // 继承 i64的格式化

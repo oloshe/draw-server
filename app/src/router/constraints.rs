@@ -1,6 +1,6 @@
 use actix::Addr;
 use std::collections::HashMap;
-use crate::ws::WsConn;
+use crate::WsConn;
 
 /// 使用 `#[derive(Message, Cmd)]` 实现该模块 并且再 [`MODEL_FUNC`] 定义处注册路由
 pub trait ModelFunc {
@@ -14,7 +14,6 @@ pub trait ModelFunc {
 }
 
 ///  注册路由
-#[macro_export]
 macro_rules! register_macro {
 	($(
 		$(#[$outer:meta])*
@@ -23,7 +22,7 @@ macro_rules! register_macro {
         use std::collections::HashMap;
         use actix::{Addr, Message};
         use crate::router::constraints::ModelFunc;
-        use crate::ws::WsConn;
+        use crate::WsConn;
 
         $(
             #[derive(Message)]
