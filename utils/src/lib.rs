@@ -6,6 +6,7 @@ pub use log::info;
 pub use log::error;
 pub use urlencoding;
 pub use querystring;
+pub use lazy_static::lazy_static;
 
 /// 初始化打印日志
 pub fn init_logger () {

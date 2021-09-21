@@ -290,9 +290,20 @@ dependencies = [
  "actix",
  "actix-web",
  "actix-web-actors",
+ "cache",
  "ds",
- "lazy_static",
  "utils",
+]
+
+[[package]]
+name = "async-trait"
+version = "0.1.51"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44318e776df68115a881de9a8fd1b9e53368d7a4a5ce4cc48517da3393233a5e"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -381,6 +392,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "cache"
+version = "0.1.0"
+dependencies = [
+ "redis",
+ "utils",
+]
+
+[[package]]
 name = "cc"
 version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -406,6 +425,16 @@ dependencies = [
  "num-traits",
  "time 0.1.44",
  "winapi",
+]
+
+[[package]]
+name = "combine"
+version = "4.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a909e4d93292cd8e9c42e189f61681eff9d67b6541f96b8a1a737f23737bd001"
+dependencies = [
+ "bytes",
+ "memchr",
 ]
 
 [[package]]
@@ -512,6 +541,12 @@ version = "0.1.0"
 dependencies = [
  "serde",
 ]
+
+[[package]]
+name = "dtoa"
+version = "0.4.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "56899898ce76aaf4a0f24d914c97ea6ed976d42fec6ad33fcbb0a1103e07b2b0"
 
 [[package]]
 name = "either"
@@ -1039,6 +1074,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "redis"
+version = "0.21.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "202c5bf92cad3d57605c366e644a7fbf305a83f19754fc66678c6265dcc9b8b4"
+dependencies = [
+ "async-trait",
+ "combine",
+ "dtoa",
+ "itoa",
+ "percent-encoding",
+ "sha1",
+ "url",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1471,6 +1521,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "env_logger",
+ "lazy_static",
  "log",
  "querystring",
  "urlencoding",

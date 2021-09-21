@@ -1,5 +1,5 @@
 use actix_web::{App, HttpServer, web};
-use crate::ws::upgrade::ws_upgrade_handle;
+use crate::ws::upgrade::ws_upgrade;
 
 /// 启动服务器
 pub async fn create_app() {
@@ -9,7 +9,7 @@ pub async fn create_app() {
         App::new()
             .service(
                 web::resource("/ws").route(
-                    web::get().to(ws_upgrade_handle)
+                    web::get().to(ws_upgrade)
                 )
             )
     })

@@ -45,7 +45,7 @@ macro_rules! register_macro {
             }
         )*
         
-        lazy_static::lazy_static! {
+        utils::lazy_static! {
             pub static ref MODEL_FUNC: HashMap<&'static str, fn(addr: Addr<WsConn>, data: String)> = {
                 let mut map = HashMap::new();
                 $($model::register(&mut map);)*

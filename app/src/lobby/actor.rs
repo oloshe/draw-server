@@ -45,15 +45,9 @@ impl LobbyActor {
     fn send_msg_to_room(&self, msg: String, room_id: &RoomId, expect_uid: Option<Uid>) {
         let room_info = self.rooms.get(room_id);
         if let Some(room_info) = room_info {
-            if let Some(expect_uid) = expect_uid {
                 room_info.players.iter()
-                    .filter(|(_, p)| p.uid == expect_uid)
+                    .filter(|(_, p)| Some(p.uid) == expect_uid)
                     .for_each(|data| self.send_msg(msg.to_owned(), data.0))
-            } else {
-                room_info.players.iter()
-                    .for_each(|data| self.send_msg(msg.to_owned(), data.0))
-            }
-
         } else {
             error!("send message to room error");
         }

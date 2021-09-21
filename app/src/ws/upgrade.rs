@@ -4,7 +4,7 @@ use utils::info;
 use crate::{WsConn, ws::request::ConnectQuery};
 
 /// ws 连接时调用
-pub async fn ws_upgrade_handle(
+pub async fn ws_upgrade(
     req: HttpRequest, 
     stream: web::Payload,
 ) -> Result<HttpResponse, actix_web::Error> {
