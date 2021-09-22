@@ -8,8 +8,13 @@ edition = "2018"
 [dependencies]
 utils = { path = "../utils" }
 ds = { path = "./src/ds" }
-cache = { path = "../cache" }
 
+# 0.10以上版本不支持 actix-web-actors 3.0 
 actix = "0.12.0"
-actix-web = "4.0.0-beta.8"
-actix-web-actors = "4.0.0-beta.6"
+actix-web = "4.0.0-beta.9"
+actix-web-actors = "4.0.0-beta.7"
+actix-redis = "0.10.0-beta.2"
+
+mongodb = "2.0.0"
+
+

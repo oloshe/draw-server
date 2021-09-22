@@ -10,11 +10,10 @@ edition = "2018"
 members = [
     "app",
     "utils",
-    "app/src/ds",
-    "cache"
+    "app/src/ds"
 ]
 
 [dependencies]
 app = { path = "./app" }
 utils = { path = "./utils" }
-actix-web = "4.0.0-beta.8"
+actix-web = "4.0.0-beta.9"

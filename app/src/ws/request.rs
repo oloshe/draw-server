@@ -27,14 +27,16 @@ use std::borrow::Cow;
 
 use utils::info;
 
+use super::conn::WsConn;
+
 
 /// 连接时的 query 参数
 #[derive(Debug)]
 pub struct ConnectQuery {
     /// 微信小程序登陆的 code
     pub code: Option<String>,
-    /// web 端登录时的 nick
-    pub nick: Option<String>,
+    /// web 端登录时的 uid
+    pub uid: Option<String>,
     /// web 端登陆时的密码
     pub pwd: Option<String>,
 }
@@ -42,7 +44,7 @@ impl ConnectQuery {
     pub fn new(query_string: &str) -> Self {
         let queries = utils::querystring::querify(query_string);
         let mut result = ConnectQuery { 
-            nick: None,
+            uid: None,
             code: None,
             pwd: None,
         };
@@ -57,7 +59,7 @@ impl ConnectQuery {
                     .to_string()
             );
             match key {
-                "un" => result.nick = some_value,
+                "uid" => result.uid = some_value,
                 "code" => result.code = some_value,
                 "pwd" => result.pwd = some_value,
                 _ => (),
@@ -65,4 +67,15 @@ impl ConnectQuery {
         });
         result
     }
+}
+
+pub struct QueryReducer;
+
+impl QueryReducer{
+	pub(crate) fn exec(query: ConnectQuery) -> WsConn {
+		if let Some(uid) = &query.uid {
+			
+		}
+		WsConn::default()
+	}
 }
