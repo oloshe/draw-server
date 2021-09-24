@@ -75,7 +75,17 @@ impl QueryReducer{
 	pub(crate) fn exec(query: ConnectQuery) -> WsConn {
 		if let Some(uid) = &query.uid {
 			
+			/*
+			login(uid, pwd);
+			fn login(uid, pwd) {
+				let user = db.getUser(uid);
+			}
+			*/
 		}
 		WsConn::default()
 	}
+}
+
+fn login(uid: &String, pwd: Option<String>) {
+	
 }

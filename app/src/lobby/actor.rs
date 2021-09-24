@@ -1,7 +1,8 @@
 use std::{collections::HashMap};
 
 use actix::{Actor, Context, Handler, Recipient};
-use ds::{base::{RoomId, Uid}, room::RoomInfo};
+use crate::data_struct::room::RoomInfo;
+use crate::base::*;
 use utils::{error, info};
 
 use crate::msg::{NormalResult, message::*};
