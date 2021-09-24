@@ -387,8 +387,8 @@ dependencies = [
  "actix-redis",
  "actix-web",
  "actix-web-actors",
- "ds",
  "mongodb",
+ "serde",
  "utils",
 ]
 
@@ -774,13 +774,6 @@ dependencies = [
  "actix-web",
  "app",
  "utils",
-]
-
-[[package]]
-name = "ds"
-version = "0.1.0"
-dependencies = [
- "serde",
 ]
 
 [[package]]
@@ -2521,6 +2514,7 @@ dependencies = [
  "lazy_static",
  "log",
  "querystring",
+ "serde",
  "urlencoding",
 ]
 
