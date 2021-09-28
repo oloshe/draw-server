@@ -1,4 +1,4 @@
-use std::{collections::HashMap};
+use std::{collections::{HashMap, HashSet}, hash::Hash};
 
 use actix::{Actor, Context, Handler, Recipient};
 use crate::data_struct::room::RoomInfo;
@@ -15,6 +15,8 @@ pub struct LobbyActor {
     pub online_count: u32,
     /// 房间 id-信息 映射表
     pub rooms: HashMap<RoomId, RoomInfo>,
+	/// 房间socket
+	pub room_sessions: HashMap<RoomId, HashSet<Socket>>,
     // 玩家在哪个房间
     pub player_room: HashMap<Uid, RoomId>, 
 }
@@ -29,6 +31,7 @@ impl Default for LobbyActor {
             online_count: 0,
             sessions: HashMap::new(),
             rooms: HashMap::new(),
+			room_sessions: HashMap::new(),
             player_room: HashMap::new(),
         }
     }
@@ -43,11 +46,11 @@ impl LobbyActor {
         }
     }
 
-    fn send_msg_to_room(&self, msg: String, room_id: &RoomId, expect_uid: Option<Uid>) {
+    fn send_msg_to_room(&self, msg: String, room_id: &RoomId, expect_uid: Option<&Uid>) {
         let room_info = self.rooms.get(room_id);
         if let Some(room_info) = room_info {
                 room_info.players.iter()
-                    .filter(|(_, p)| Some(p.uid) == expect_uid)
+                    .filter(|(_, p)| Some(&p.uid) == expect_uid)
                     .for_each(|data| self.send_msg(msg.to_owned(), data.0))
         } else {
             error!("send message to room error");
@@ -67,12 +70,21 @@ impl LobbyActor {
 }
 
 impl Handler<LobbyConnect> for LobbyActor {
-    type Result = ();
+    type Result = bool;
 
     fn handle(&mut self, msg: LobbyConnect, _: &mut Self::Context) -> Self::Result {
         info!("{} connected!", &msg.uid);
-        self.sessions.insert(msg.uid, msg.addr);
-        self.online_count += 1;
+		if let Some(room_info) = self.rooms.get(&msg.room_id) {
+			if room_info.is_this_player_in(&msg.uid) {
+				self.online_count += 1;
+				self.sessions.insert(msg.uid, msg.addr.clone());
+				self.room_sessions.entry(msg.room_id)
+					.or_insert(HashSet::new())
+					.insert(msg.addr);
+				return true
+			}
+		}
+		false
     }
 }
 
@@ -81,7 +93,7 @@ impl Handler<LobbyDisconnect> for LobbyActor {
 
     fn handle(&mut self, msg: LobbyDisconnect, _: &mut Self::Context) -> Self::Result {
         info!("{} disconnect.", msg.uid);
-        self.online_count = self.online_count - 1;
+        let _ = self.online_count.checked_sub(1);
         // 移除 sessions
         if self.sessions.remove(&msg.uid).is_some() {
             self.remove_player(msg.uid);
@@ -93,7 +105,36 @@ impl Handler<LobbyJoinRoom> for LobbyActor {
     type Result = NormalResult;
 
     fn handle(&mut self, msg: LobbyJoinRoom, ctx: &mut Self::Context) -> Self::Result {
-        
+        let player_data = msg.player_data;
+		let room_id = msg.room_id;
+		
+		if let None = self.player_room.get(&player_data.uid) {
+			if let Some(room) = self.rooms.get_mut(&room_id) {
+				if let Some(reason) = room.join(&player_data) {
+					return Some(reason)
+				}
+				self.player_room.insert(player_data.uid.clone(), room_id.clone());
+				// if let Some(socket) = self.sessions.get(&player_data.uid) {
+				// 	self.room_sessions.entry(room_id)
+				// 		.or_insert(HashSet::new())
+				// 		.insert(socket.clone());
+				// } else {
+				// 	return Some("socket")
+				// }
+			} else {
+				return Some("noRoom")
+			}
+		} else {
+			return Some("inRoom")
+		}
         None
+    }
+}
+
+impl Handler<LobbyCreateRoom> for LobbyActor {
+    type Result = ();
+
+    fn handle(&mut self, msg: LobbyCreateRoom, _: &mut Self::Context) -> Self::Result {
+        self.rooms.insert(msg.room_info.room_id.clone(), msg.room_info);
     }
 }

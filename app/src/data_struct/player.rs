@@ -1,8 +1,8 @@
 use crate::base::Uid;
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 
 /// 玩家基础数据
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerData {
     /// 唯一id
     pub uid: Uid,

@@ -1,5 +1,5 @@
 use actix_web::{App, HttpServer, middleware, web};
-use crate::ws::upgrade::ws_upgrade;
+use crate::{http::{create_room}, ws::upgrade::{self, join_room}};
 
 /// 启动服务器
 pub async fn create_app() {
@@ -12,13 +12,13 @@ pub async fn create_app() {
 				.header("server-version", "0.1")
 				.header("power-by", "actix-web")
 			)
-			// 临时的数据每次生成随机key，不好
-			// .wrap(RedisSession::new(redis_url,  &[0; 32]))
-            .service(
-                web::resource("/ws").route(
-                    web::get().to(ws_upgrade)
-                )
-            )
+            // .service(
+            //     web::resource("/ws").route(
+            //         web::get().to(ws_upgrade)
+            //     )
+            // )
+			.service(join_room)
+			.service(create_room)
     })
 		.workers(workers)
         .bind(format!("{}:{}", addr, port))

@@ -1,6 +1,7 @@
-use actix::AsyncContext;
+use actix::{ActorContext, ContextFutureSpawner, fut};
+use actix::{ActorFutureExt, AsyncContext, WrapFuture};
 use actix::{Actor, Handler, StreamHandler};
-use actix_web_actors::ws::{self, WebsocketContext, Message};
+use actix_web_actors::ws::{self, CloseReason, Message, WebsocketContext};
 
 use crate::base::*;
 use crate::LOBBY_ADDR;
@@ -8,28 +9,40 @@ use crate::msg::message::*;
 use crate::ws::request::WsRequest;
 
 pub struct WsConn {
-    pub room_id: Option<RoomId>,
+    pub room_id: RoomId,
     pub uid: Uid,
-}
-
-impl Default for WsConn {
-    fn default() -> Self {
-        Self { room_id: Default::default(), uid: Uid(0) }
-    }
 }
 
 impl Actor for WsConn {
     type Context = WebsocketContext<Self>;
 
     fn started(&mut self, ctx: &mut Self::Context) {
-        LOBBY_ADDR.do_send(LobbyConnect {
+        LOBBY_ADDR.send(LobbyConnect {
             addr: ctx.address().recipient(),
-            uid: self.uid,
+            uid: self.uid.clone(),
+			room_id: self.room_id.clone(),
         })
+			.into_actor(self)
+			.then(|ret, conn, ctx| {
+				match ret {
+					Ok(false) => {
+						ctx.close(Some(
+							CloseReason {
+								code: ws::CloseCode::Invalid,
+								description: None
+							}
+						));
+						ctx.stop();
+					},
+					_ => (),
+				}
+				fut::ready(())
+			})
+			.wait(ctx);
     }
     fn stopping(&mut self, _: &mut Self::Context) -> actix::Running {
         LOBBY_ADDR.do_send(LobbyDisconnect {
-            uid: self.uid,
+            uid: self.uid.clone(),
         });
         actix::Running::Stop
     }

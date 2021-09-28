@@ -2,13 +2,19 @@ use std::{fmt::Display, hash::Hash};
 use serde::{Serialize, Deserialize};
 
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
-pub struct Uid(pub i64);
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
+pub struct Uid(pub String);
+
+impl Default for Uid {
+    fn default() -> Self {
+        Self(Default::default())
+    }
+}
 
 // 继承 i64的格式化
 impl Display for Uid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        i64::fmt(&self.0, f)
+        String::fmt(&self.0, f)
     }
 }
 
@@ -19,7 +25,7 @@ impl Hash for Uid {
 }
 
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
 pub struct RoomId(pub String);
 
 impl Display for RoomId {
@@ -37,5 +43,11 @@ impl Hash for RoomId {
 
 
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash, Serialize, Deserialize, Clone, Copy)]
 pub struct SeatNo(pub u16);
+
+impl From<u16> for SeatNo {
+    fn from(num: u16) -> Self {
+        Self(num)
+    }
+}

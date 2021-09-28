@@ -1,5 +1,5 @@
 use actix::{Message, Recipient};
-use crate::base::*;
+use crate::{base::*, data_struct::{player::PlayerData, room::RoomInfo}};
 use super::NormalResult;
 
 msg! {
@@ -13,16 +13,22 @@ msg! {
         /// 玩家的ws接收器
         addr: Recipient<WsMessage>,
         uid: Uid,
-    } -> (),
+		room_id: RoomId,
+    } -> bool,
 
     /// 大厅接收玩家失去连接消息
     LobbyDisconnect {
         uid: Uid,
     } -> (),
+
+	/// 创建房间
+	LobbyCreateRoom {
+		room_info: RoomInfo,
+	} -> (),
     
-    /// 大厅接受玩家加入房间消息
+    /// 加入房间
     LobbyJoinRoom {
-        uid: Uid,
+        player_data: PlayerData,
         room_id: RoomId,
     } -> NormalResult,
 }

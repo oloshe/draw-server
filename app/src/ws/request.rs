@@ -30,62 +30,58 @@ use utils::info;
 use super::conn::WsConn;
 
 
-/// 连接时的 query 参数
-#[derive(Debug)]
-pub struct ConnectQuery {
-    /// 微信小程序登陆的 code
-    pub code: Option<String>,
-    /// web 端登录时的 uid
-    pub uid: Option<String>,
-    /// web 端登陆时的密码
-    pub pwd: Option<String>,
-}
-impl ConnectQuery {
-    pub fn new(query_string: &str) -> Self {
-        let queries = utils::querystring::querify(query_string);
-        let mut result = ConnectQuery { 
-            uid: None,
-            code: None,
-            pwd: None,
-        };
-        queries.iter().for_each(|pair| {
-            let (key, value) = *pair;
-            if value == "" {
-                return;
-            }
-            let some_value = Some(
-                utils::urlencoding::decode(&value)
-                    .unwrap_or(Cow::Borrowed(value))
-                    .to_string()
-            );
-            match key {
-                "uid" => result.uid = some_value,
-                "code" => result.code = some_value,
-                "pwd" => result.pwd = some_value,
-                _ => (),
-            };
-        });
-        result
-    }
-}
+// /// 连接时的 query 参数
+// #[derive(Debug)]
+// pub struct ConnectQuery {
+//     /// 微信小程序登陆的 code
+//     pub code: Option<String>,
+//     /// web 端登录时的 uid
+//     pub uid: Option<String>,
+//     /// web 端登陆时的密码
+//     pub pwd: Option<String>,
+// }
+// impl ConnectQuery {
+//     pub fn new(query_string: &str) -> Self {
+//         let queries = utils::querystring::querify(query_string);
+//         let mut result = ConnectQuery { 
+//             uid: None,
+//             code: None,
+//             pwd: None,
+//         };
+//         queries.iter().for_each(|pair| {
+//             let (key, value) = *pair;
+//             if value == "" {
+//                 return;
+//             }
+//             let some_value = Some(
+//                 utils::urlencoding::decode(&value)
+//                     .unwrap_or(Cow::Borrowed(value))
+//                     .to_string()
+//             );
+//             match key {
+//                 "uid" => result.uid = some_value,
+//                 "code" => result.code = some_value,
+//                 "pwd" => result.pwd = some_value,
+//                 _ => (),
+//             };
+//         });
+//         result
+//     }
+// }
 
-pub struct QueryReducer;
+// pub struct QueryReducer;
 
-impl QueryReducer{
-	pub(crate) fn exec(query: ConnectQuery) -> WsConn {
-		if let Some(uid) = &query.uid {
+// impl QueryReducer{
+// 	pub(crate) fn exec(query: ConnectQuery) -> WsConn {
+// 		if let Some(uid) = &query.uid {
 			
-			/*
-			login(uid, pwd);
-			fn login(uid, pwd) {
-				let user = db.getUser(uid);
-			}
-			*/
-		}
-		WsConn::default()
-	}
-}
-
-fn login(uid: &String, pwd: Option<String>) {
-	
-}
+// 			/*
+// 			login(uid, pwd);
+// 			fn login(uid, pwd) {
+// 				let user = db.getUser(uid);
+// 			}
+// 			*/
+// 		}
+// 		// WsConn::default()
+// 	}
+// }
