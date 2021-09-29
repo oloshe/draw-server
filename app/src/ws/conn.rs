@@ -26,13 +26,13 @@ impl Actor for WsConn {
 			.then(|ret, conn, ctx| {
 				match ret {
 					Ok(false) => {
+						ctx.text("invalid");
 						ctx.close(Some(
 							CloseReason {
 								code: ws::CloseCode::Invalid,
 								description: None
 							}
 						));
-						ctx.stop();
 					},
 					_ => (),
 				}

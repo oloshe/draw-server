@@ -93,10 +93,11 @@ impl Handler<LobbyDisconnect> for LobbyActor {
 
     fn handle(&mut self, msg: LobbyDisconnect, _: &mut Self::Context) -> Self::Result {
         info!("{} disconnect.", msg.uid);
-        let _ = self.online_count.checked_sub(1);
         // 移除 sessions
         if self.sessions.remove(&msg.uid).is_some() {
+			// 成功去掉
             self.remove_player(msg.uid);
+			let _ = self.online_count.checked_sub(1);
         }
     }
 }
@@ -136,5 +137,16 @@ impl Handler<LobbyCreateRoom> for LobbyActor {
 
     fn handle(&mut self, msg: LobbyCreateRoom, _: &mut Self::Context) -> Self::Result {
         self.rooms.insert(msg.room_info.room_id.clone(), msg.room_info);
+    }
+}
+
+impl Handler<LobbyRoomReady> for LobbyActor {
+    type Result = ();
+
+    fn handle(&mut self, msg: LobbyRoomReady, ctx: &mut Self::Context) -> Self::Result {
+        let LobbyRoomReady { room_id, uid, ready } = msg;
+		if let Some(room) = self.rooms.get_mut(&room_id) {
+			room.player_ready_change(&uid, ready);
+		}
     }
 }

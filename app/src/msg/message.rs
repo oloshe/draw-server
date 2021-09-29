@@ -31,4 +31,10 @@ msg! {
         player_data: PlayerData,
         room_id: RoomId,
     } -> NormalResult,
+
+	LobbyRoomReady {
+		room_id: RoomId,
+		uid: Uid,
+		ready: bool,
+	} -> ()
 }

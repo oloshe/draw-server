@@ -2,10 +2,11 @@
 mod msg;
 mod ws;
 mod lobby;
-mod user;
+mod model;
 mod router;
 mod start;
 mod http;
+mod extend;
 
 mod data_struct;
 

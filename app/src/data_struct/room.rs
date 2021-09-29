@@ -73,6 +73,13 @@ impl RoomInfo {
 	pub(crate) fn is_this_player_in(&self, uid: &Uid) -> bool {
 		self.players.contains_key(uid)
 	}
+	pub(crate) fn player_ready_change(&mut self, uid: &Uid, ready: bool) {
+		if let Some(ready_state) = self.ready_state.get_mut(uid) {
+			if &ready == ready_state {
+				*ready_state = ready;
+			}
+		}
+	}
 }
 
 use utils::serde_repr::*;

@@ -1,3 +1,8 @@
+use std::borrow::Cow;
+
+use utils::info;
+
+use super::conn::WsConn;
 
 /// 玩家通过ws发送过来的请求，分割为两部分
 /// 第一部分确认函数，第二部分为携带的数据
@@ -22,12 +27,6 @@ impl WsRequest {
         }
     }
 }
-
-use std::borrow::Cow;
-
-use utils::info;
-
-use super::conn::WsConn;
 
 
 // /// 连接时的 query 参数
